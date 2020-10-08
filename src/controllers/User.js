@@ -14,7 +14,7 @@ exports.auth = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const foundUser = await User.find({ email, password }).exec();
+    const foundUser = await User.findOne({ email, password }).exec();
     if (foundUser) {
       return res.send(foundUser);
     }

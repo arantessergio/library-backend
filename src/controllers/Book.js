@@ -12,7 +12,10 @@ exports.create = async (req, res) => {
 
 exports.list = async (req, res) => {
   try {
-    const result = await Book.paginate({}, { page, limit: 20 });
+    const result = await Book.paginate(
+      {},
+      { page: req?.query?.page ?? 1, limit: 20 }
+    );
 
     return res.send(result);
   } catch (error) {
@@ -41,7 +44,7 @@ exports.get = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    const result = await Book.findByIdAndUpdate(id, req.body, {
+    const result = await Book.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     }).exec();
     return res.send(result);
