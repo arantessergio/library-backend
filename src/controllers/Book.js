@@ -12,8 +12,20 @@ exports.create = async (req, res) => {
 
 exports.list = async (req, res) => {
   try {
+    const {
+      search,
+      startYear = 0,
+      endYear = new Date().getFullYear(),
+    } = req.query;
     const result = await Book.paginate(
-      {},
+      {
+        $or: [
+          { titulo: { $regex: new RegExp(search), $options: "i" } },
+          { autor: { $regex: new RegExp(search), $options: "i" } },
+          { isbn: { $regex: new RegExp(search), $options: "i" } },
+        ],
+        ano: { $gte: Number(startYear), $lte: Number(endYear) },
+      },
       { page: req?.query?.page ?? 1, limit: 20 }
     );
 
