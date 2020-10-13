@@ -25,4 +25,4 @@ require("./src/models/Book");
 app.use(userRouter);
 app.use(bookRouter);
 
-app.listen(4000, () => console.log("api is running..."));
+app.listen(process.env.SERVER_PORT, () => console.log("api is running..."));
