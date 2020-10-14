@@ -6,6 +6,7 @@ const dbConfig = require("./src/config/database");
 const userRouter = require("./src/routes/User");
 const bookRouter = require("./src/routes/Book");
 const cors = require("cors");
+const { populate: populateBooks } = require("./src/utils/seeder");
 
 const app = express();
 
@@ -25,4 +26,7 @@ require("./src/models/Book");
 app.use(userRouter);
 app.use(bookRouter);
 
-app.listen(process.env.SERVER_PORT, () => console.log("api is running..."));
+app.listen(process.env.SERVER_PORT, () => {
+  console.log("Api is running");
+  populateBooks().then(() => console.log("Banco populado com sucesso!"));
+});
