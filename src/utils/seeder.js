@@ -1,6 +1,9 @@
 const axios = require("axios");
 const Book = require("../models/Book");
+const User = require("../models/User");
+const bcrypt = require("bcrypt");
 
+const saltRounds = 10;
 const URL = "http://biblioteca.supero.com.br/api/livros";
 
 const fetchBooks = async (page) => {
@@ -27,5 +30,17 @@ export const populate = async () => {
       await Promise.all(result.data.items.map((i) => Book.create(i)));
       page++;
     }
+  }
+};
+
+export const createUser = async () => {
+  if (!(await User.exists({ email: "teste@teste.com.br" }))) {
+    const encryptedPassword = await bcrypt.hash("123456", saltRounds);
+
+    await User.create({
+      email: "teste@teste.com.br",
+      password: encryptedPassword,
+      name: "Usuario Testador",
+    });
   }
 };
